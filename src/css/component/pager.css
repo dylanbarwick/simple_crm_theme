@@ -1,0 +1,24 @@
+nav.pager {
+  margin-top: 20px;
+
+  ul.pager__items {
+    list-style: none;
+
+    li.pager__item {
+      display: inline-block;
+      margin-right: 10px;
+
+      a {
+        color: #000;
+        text-decoration: none;
+        @apply px-3 py-2 bg-transparent rounded-full;
+        transition: all 0.3s;
+
+        &:hover {
+          background-color: #cc6666;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

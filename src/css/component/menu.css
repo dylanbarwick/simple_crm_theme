@@ -1,0 +1,112 @@
+ul {
+  &.tabs {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.3rem 0;
+    border-bottom: 1px solid #ccc;
+    li {
+      flex: 0;
+      text-align: center;
+      padding: 5px 15px 3px 15px;
+      margin-right: 1rem;
+      cursor: pointer;
+      background-color: bisque;
+      border-radius: 0.5rem 0.5rem 0 0;
+      border-color: #999999;
+      border-style: solid;
+      border-width: 1px 1px 0 1px;
+      &.is-active {
+        background-color: #ccc;
+      }
+      &:hover {
+        background-color: #999;
+      }
+    }
+  }
+}
+
+#block-simple-crm-theme-account-menu {
+  ul.actual-menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 10;
+    li {
+      flex: 0;
+      text-align: right;
+      padding: 5px 15px 3px 15px;
+      margin-right: 1rem;
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 0.5rem 0.5rem 0 0;
+      &.is-active {
+        background-color: #ccc;
+      }
+      &:hover {
+        background-color: #999;
+      }
+    }
+  }
+}
+
+nav#block-simple-crm-theme-main-menu {
+  ul.actual-menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 501;
+    li {
+      flex: auto;
+      text-align: left;
+      padding: 0;
+      cursor: pointer;
+      background-color: #007743;
+      color: white;
+      &.is-active {
+        background-color: #ccc;
+        color: black;
+      }
+      &:hover {
+        background-color: #999;
+        color: black;
+        ul.sub-menu {
+          display: block;
+        }
+      }
+      a, span {
+        display: inline-block;
+        width: 100%;
+        padding: 5px 15px 3px 15px;
+      }
+      ul.sub-menu {
+        display: none;
+        position: absolute;
+        background-color: #007743;
+        color: white;
+        border-radius: 0.5rem;
+        li {
+          padding: 0;
+          cursor: pointer;
+          background-color: #007743;
+          color: white;
+          &.is-active {
+            background-color: #ccc;
+            color: black;
+          }
+          &:hover {
+            background-color: #999;
+            color: black;
+          }
+
+          a {
+            padding: 5px 45px 3px 15px;
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+}

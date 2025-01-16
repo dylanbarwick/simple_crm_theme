@@ -1,0 +1,12 @@
+.status-message {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  font-size: 1.2em;
+  font-weight: bold;
+  background-color: #686868;
+  color: #fff;
+}
+.status-message.error {
+  background-color: #cc0000;
+}

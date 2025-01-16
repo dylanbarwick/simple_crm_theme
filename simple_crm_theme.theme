@@ -1,0 +1,278 @@
+<?php
+
+declare(strict_types=1);
+
+use Drupal\node\Entity\Node;
+
+/**
+ * @file
+ * Functions to support theming in the Simple CRM Theme theme.
+ */
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function simple_crm_theme_preprocess_html(array &$variables): void
+{
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page.html.twig.
+ */
+function simple_crm_theme_preprocess_page(array &$variables): void
+{
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for node.html.twig.
+ */
+function simple_crm_theme_preprocess_node(array &$variables): void
+{
+  $node = $variables['node'];
+  $bundle = $node->bundle();
+  $user_id = \Drupal::currentUser()->id();
+  $service = \Drupal::service('simplecrm.rates');
+  switch ($bundle) {
+    case 'company':
+      // $variables['theme_hook_suggestions'][] = 'node__company';
+      break;
+    case 'contact':
+      // $variables['theme_hook_suggestions'][] = 'node__contact';
+      break;
+    case 'job':
+      // $variables['theme_hook_suggestions'][] = 'node__job';
+      break;
+    case 'gig':
+      // $variables['theme_hook_suggestions'][] = 'node__gig';
+      break;
+    case 'invoice':
+      // $variables['theme_hook_suggestions'][] = 'node__invoice';
+      // Get the customer address from the field_chargeable_work field.
+      $field_chargeable_work = $node->get('field_chargeable_work')->getValue();
+      $chargeable_work = Node::load($field_chargeable_work[0]['target_id']);
+      $customer_nid = $chargeable_work->get('field_customer')->getValue();
+      $customer = Node::load($customer_nid[0]['target_id']);
+      $viewable_address = $customer->field_address->view();
+      if ($customer->getType() == 'contact') {
+        $variables['customer_name'] = $customer->getTitle();
+      }
+      else {
+        $variables['company_name'] = $customer->getTitle();
+        // Get title of the first value in field_contacts.
+        $field_contacts = $customer->get('field_contacts')->getValue();
+        $contact = Node::load($field_contacts[0]['target_id']);
+        $variables['customer_name'] = $contact->getTitle();
+      }
+      $variables['customer_address'] = $viewable_address;
+
+      // Get gig data from the field_chargeable_work field
+      // If field_chargeable_work references a gig then we just use that.
+      // If field_chargeable_work references a job then we retrieve linked gigs
+      // and use them.
+      switch ($chargeable_work->getType()){
+        case 'gig':
+          $variables['chargeable_gigs'][] = _simplecrm_get_chargeable_gigs($chargeable_work);
+          break;
+
+        case 'job':
+          // Get all gig nodes that reference this job.
+          $query = \Drupal::entityQuery('node')
+            ->condition('type', 'gig')
+            ->condition('uid', $user_id)
+            ->condition('field_job', $chargeable_work->id() )
+            ->condition('field_gig_status', 'complete' )
+            ->accessCheck(FALSE)
+            ->sort('field_start_date', 'ASC')
+            ->range(0, 1);
+          $nids = $query->execute();
+          $gigs = [];
+          foreach ($nids as $gig_nid) {
+            $this_gig = Node::load($gig_nid);
+            $gigs[] = _simplecrm_get_chargeable_gigs($this_gig);
+          }
+          $variables['chargeable_gigs'] = $gigs;
+          break;
+      
+        default:
+          break;
+      }
+
+      $variables['tax_info'] = $service->getUserTax($user_id);
+
+      $variables['expenses'] = _simplecrm_get_expenses($chargeable_work);
+
+      // Get terms info.
+      $info = $service->getRates($chargeable_work->id());
+
+      $variables['terms_info']['field_payment_terms'] = $info['field_payment_terms'];
+      $variables['terms_info']['field_payment_date'] = $info['field_payment_date'];
+    // End of `invoice` case.
+    break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for field.html.twig.
+ */
+function simple_crm_theme_preprocess_field(array &$variables): void {
+  switch ($variables['field_name']) {
+    case 'field_rate':
+      $node = $variables['element']['#object'];
+      // Only update this field if both currency and unit exist.
+      if (empty($node->get('field_currency')->value) || empty($node->get('field_time_unit')->value)) {
+        return;
+      }
+      $currency_symbol = _simplecrm_get_currency_symbol($node);
+      $rate_concat = $currency_symbol . $node->get('field_rate')->value . '/' . substr(strtolower($node->get('field_time_unit')->value), 0, -1);
+      $variables['items'][0]['content']['#markup'] = $rate_concat;
+      break;
+
+    case 'field_price':
+      $node = $variables['element']['#object'];
+      // Only update this field if currency exists.
+      if (empty($node->get('field_currency')->value)) {
+        return;
+      }
+      $currency_symbol = _simplecrm_get_currency_symbol($node);
+      $price_concat = $currency_symbol . $node->get('field_price')->value;
+      $variables['items'][0]['content']['#markup'] = $price_concat;
+      break;
+  }
+}
+
+/**
+ * Implements template_preprocess_datetime_form().
+ */
+function simple_crm_theme_preprocess_datetime_form(&$variables) {
+  $element = $variables['element'];
+    // dump($variables);
+  if (isset($element['#attributes']['data-drupal-selector']) && stripos($element['#attributes']['data-drupal-selector'], 'edit-field-date-issued') === 0) {
+    $variables['description'] = $element['#description'];
+  }
+}
+
+/**
+ * Implements template_preprocess_file_link().
+ */
+function simple_crm_theme_preprocess_file_link(&$variables) {
+  $file = $variables['file'];
+  $variables['receipt_uri'] = $file->getFileUri();
+  if ($variables['link'] && $variables['link']['#url'] instanceof \Drupal\Core\Url) {
+    $options = $variables['link']['#url']->getOptions('attributes');
+    $options['attributes']['target'] = '_blank';
+    $variables['link']['#url']->setOptions($options);
+  }
+}
+
+/**
+ * Implements template_preprocess_form_element_label().
+ */
+function simple_crm_theme_preprocess_form_element_label(&$variables) {
+  $element = $variables['element'];
+  // dump($variables);
+  // exit;
+  if (stripos($variables['attributes']['for'], 'address-line2') !== FALSE) {
+    $variables['title_display'] = 'before';
+    $variables['attributes']['class'][] = 'invisible';
+  }
+  if (stripos($variables['attributes']['for'], 'address-line3') !== FALSE) {
+    $variables['title_display'] = 'before';
+    $variables['attributes']['class'][] = 'invisible';
+  }
+  if (stripos($variables['attributes']['for'], 'edit-field-date-issued') !== FALSE) {
+    // Make the tile display before the field.
+    $variables['title_display'] = 'before';
+    // Get field instance for the datetime field.
+    $field_instance = Drupal::entityTypeManager()->getStorage('field_config')->load('node.invoice.field_date_issued');
+    // Retrieve the field title.
+    $field_title = $field_instance->label();
+    // Add the field title to the form element.
+    $variables['title'] = [
+      '#markup' => $field_title,
+      '#prefix' => '<span class="field-title">',
+      '#suffix' => '</span>',
+    ];
+
+  }
+}
+
+/**
+ * Implements template_preprocess_links().
+ */
+// function simple_crm_theme_preprocess_links(&$variables) {
+//   if ($variables['theme_hook_original'] == 'links__comment') {
+//     dump($variables);
+//     foreach ($variables['links'] as $key => $link) {
+//       $variables['links'][$key]['attributes']['class'][] = 'button';
+//     }
+//   }
+// }
+
+/**
+ * Helper function to get the currency symbol.
+ */
+function _simplecrm_get_currency_symbol($node) {
+  $allowed_values = $node->getFieldDefinition('field_currency')->getFieldStorageDefinition()->getSetting('allowed_values');
+  $node_value = $node->get('field_currency')->value;
+  return $allowed_values[$node_value];
+}
+
+/**
+ * Helper function to get the currency symbol.
+ */
+function _simplecrm_generic_get_currency_symbol($node_in_question, $field_name = 'field_currency') {
+  $allowed_values = $node_in_question->getFieldDefinition('field_currency')->getFieldStorageDefinition()->getSetting('allowed_values');
+  $node_value = $node_in_question->get($field_name)->value;
+  return $allowed_values[$node_value];
+}
+
+/**
+ * Helper function to populate a `chargeable_gigs` array element.
+ */
+function _simplecrm_get_chargeable_gigs(Node $this_gig) {
+  $field_name = 'field_currency'; // Replace with your field name
+  // $field_definition = $this_gig->{$field_name}->getFieldDefinition()->getFieldStorageDefinition();
+  // $options = options_allowed_values($field_definition, $this_gig);
+  // $field_value = $this_gig->get($field_name)->value;
+  // $field_currency_label = $options[$field_value];
+  $field_currency_label = _simplecrm_generic_get_currency_symbol($this_gig, $field_name);
+  $chargeable_gig = [
+    'title' => $this_gig->getTitle(),
+    'body' => $this_gig->get('body')->value,
+    'time_spent' => $this_gig->get('field_time_spent')->value,
+    'rate' => $this_gig->get('field_rate')->value,
+    'total' => number_format($this_gig->get('field_rate')->value * $this_gig->get('field_time_spent')->value, 2),
+    'currency' => $field_currency_label,
+    'time_unit' => substr(strtolower($this_gig->get('field_time_unit')->value), 0, -1),
+  ];
+  return $chargeable_gig;
+}
+
+/**
+ * Helper function to get the expenses.
+ */
+function _simplecrm_get_expenses(Node $this_chargeable_work) {
+  $field_name = 'field_currency'; // Replace with your field name
+  $field_currency_label = _simplecrm_generic_get_currency_symbol($this_chargeable_work, $field_name);
+  $expenses = [];
+  // Get all expenses that reference this chargeable work.
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'expense')
+    ->condition('uid', \Drupal::currentUser()->id())
+    ->condition('field_job', $this_chargeable_work->id() )
+    ->accessCheck(FALSE);
+  $nids = $query->execute();
+  // dump($nids);
+  foreach ($nids as $expense) {
+    $expense_node = Node::load($expense);
+    // dump($expense_node->getTitle());
+    $expense_data = [
+      'title' => $expense_node->getTitle(),
+      'body' => $expense_node->get('body')->value,
+      'price' => $expense_node->get('field_price')->value,
+      'currency' => _simplecrm_generic_get_currency_symbol($expense_node, $field_name),
+    ];
+    $expenses[] = $expense_data;
+  }
+  return $expenses;
+}

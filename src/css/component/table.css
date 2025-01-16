@@ -1,0 +1,51 @@
+table {
+  tr {
+    @apply border-b border-gray-300;
+  }
+  thead tr {
+    @apply border-black;
+  }
+  th, td {
+    vertical-align: top;
+    &.views-field {
+      text-align: left;
+      padding-right: 2rem;
+    }
+  }
+}
+/* End of snippet */
+
+/* Calendar view overrides. */
+.calendar-view-table {
+  caption {
+    line-height: normal;
+    font-size: 1.6rem;
+    color: #454545;
+  }
+  .calendar-view-day {
+    .views-label-field-job,
+    .views-label-title,
+    .start-stop-times {
+      font-weight: 700;
+    }
+  }
+}
+
+.calendar-view-pager__reset a, .calendar-view-pager .pager__item > a {
+  display: block;
+  background-color: #3b9717;
+  &:hover {
+    background-color: #69d73a;
+  }
+}
+
+.calendar-view-pager__reset a, .calendar-view-pager .pager__item > * {
+  padding: 0 0.5rem;
+}
+
+ul.calendar-view-pager {
+  border: 0 solid #000000;
+  border-bottom-width: 2px;
+  background-color: #dddd00;
+  margin-bottom: 0.5rem;
+}

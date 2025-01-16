@@ -1,0 +1,20 @@
+#block-simple-crm-theme-site-branding {
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #000000;
+  a.site_name {
+    color: #000099;
+    font-size: 2rem;
+    display: block;
+    font-family: 'roboto', sans-serif;
+    font-weight: 700;
+  }
+
+  .site_slogan {
+    color: #666666;
+    font-size: 1.3rem;
+    font-family: 'crimson', serif;
+    font-style: italic;
+    font-weight: 700;
+  }
+}

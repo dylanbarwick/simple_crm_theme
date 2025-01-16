@@ -1,0 +1,89 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'roboto', sans-serif;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2.2rem;
+}
+
+h3 {
+  font-size: 1.7rem;
+}
+
+h4 {
+  font-size: 1.4rem;
+}
+
+html {
+  font-family: roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000000;
+  font-weight: 400;
+}
+
+ul, ol {
+  margin: 0.5rem 1rem 1rem;
+  padding: 0 1rem;
+}
+
+ul {
+  list-style: disc;
+}
+
+ol {
+  list-style: decimal;
+}
+
+.node-contact {
+  .contact-element {
+    display: block;
+    margin-bottom: 0.5rem
+  }
+}
+
+.standard-bottom-spacing {
+  @apply pb-3 md:pb-5;
+}
+
+.field-label {
+  min-width: 20%;
+  flex: 0.5;
+}
+
+.field-value {
+  min-width: 60%;
+}
+
+.content-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+.description-field p {
+  margin-bottom: 0.5rem;
+}
+
+.layout-content {
+  article.node {
+    margin-bottom: 2rem;
+  }
+  .body,
+  .field-description {
+    border-bottom: #cccccc solid 2px;
+    margin-bottom: 1rem;
+
+    p {
+      margin-bottom: 1rem;
+    }
+  }
+}

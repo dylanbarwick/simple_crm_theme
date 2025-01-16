@@ -1,0 +1,7 @@
+# Main theme library.
+global:
+  js:
+    dist/js/simple-crm-theme.js: {}
+  css:
+    base:
+      dist/css/output.css: {}

@@ -1,0 +1,43 @@
+{#
+/**
+ * @file
+ * Theme override of a datetime form element.
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the datetime form element.
+ * - content: The datelist form element to be output.
+ *
+ * @see template_preprocess_datetime_form()
+ */
+#}
+{%
+  set classes = [
+    'js-form-item',
+    'form-item',
+    'form-type-' ~ type|clean_class,
+    'js-form-type-' ~ type|clean_class,
+    'form-item-' ~ name|clean_class,
+    'js-form-item-' ~ name|clean_class,
+    title_display not in ['after', 'before'] ? 'form-no-label',
+    disabled == 'disabled' ? 'form-disabled',
+    errors ? 'form-item--error',
+    'flex-wrap',
+  ]
+%}
+{%
+  set description_classes = [
+    'description',
+    'mx-2',
+  ]
+%}
+{%
+  set description_attributes = create_attribute()
+%}
+<div{{ attributes.addClass(classes) }} rel="datetime-form.html.twig">
+  {{ content }}
+  {% if description %}
+  <div{{ description_attributes.addClass(description_classes) }}>
+    {{ description }}
+  </div>
+  {% endif %}
+</div>

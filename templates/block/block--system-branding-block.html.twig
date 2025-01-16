@@ -1,0 +1,38 @@
+{% extends "block.html.twig" %}
+{#
+/**
+ * @file
+ * Theme override for a branding block.
+ *
+ * Each branding element variable (logo, name, slogan) is only available if
+ * enabled in the block configuration.
+ *
+ * Available variables:
+ * - site_logo: Logo for site as defined in Appearance or theme settings.
+ * - site_name: Name for site as defined in Site information settings.
+ * - site_slogan: Slogan for site as defined in Site information settings.
+ */
+#}
+{% set linkAttributes = create_attribute() %}
+
+{%
+  set link_classes = [
+    'site_name',
+  ]
+%}
+
+{% block content %}
+  <div class="lg:w-1/2">
+    {% if site_logo %}
+      <a{{ linkAttributes.addClass(link_classes) }} href="{{ path('<front>') }}" rel="home">
+        <img src="{{ site_logo }}" alt="{{ 'Home'|t }}" fetchpriority="high" />
+      </a>
+    {% endif %}
+    {% if site_name %}
+      <a{{ linkAttributes.addClass(link_classes) }} href="{{ path('<front>') }}" rel="home">{{ site_name }}</a>
+    {% endif %}
+    <div class="site_slogan">
+      {{ site_slogan }}
+    </div>
+  </div>
+{% endblock %}

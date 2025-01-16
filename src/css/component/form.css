@@ -1,0 +1,145 @@
+form {
+  fieldset {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    .fieldset-legend {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      padding: 0 5px;
+    }
+
+    .fieldset-wrapper {
+      &>.form-item {
+        margin-bottom: 0;
+      }
+    }
+  }
+  .field--type-text-with-summary {
+    .form-item {
+      background-color: #f5f5f5;
+      padding: 5px;
+    }
+  }
+  .field--type-string,
+  .field--type-string-long,
+  .field--type-entity-reference,
+  .field--type-list-string,
+  .field--type-decimal,
+  .field--type-integer,
+  .field--type-datetime,
+  .field--type-created,
+  .field--type-address,
+  .field--type-email,
+  .field--type-telephone,
+  .form-type-textfield {
+    .form-item,
+    &.form-item {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      margin-right: 0;
+      background-color: #f5f5f5;
+      &.fieldgroup {
+        border-width: 1px;
+        padding: 1rem;
+      }
+
+      label {
+        flex: 0.5;
+        margin-right: 10px;
+        text-align: left;
+        padding: 5px;
+        min-width: 20%;
+      }
+
+      input,
+      select,
+      textarea {
+        border-width: 1px;
+        border-color: black;
+        padding: 5px;
+        flex: 1;
+        min-width: 60%;
+
+        &.error {
+          border-color: #cc0000;
+          background-color: #ffcccc;
+        }
+      }
+
+      input.form-submit {
+        cursor: pointer;
+        background-color: #b0b0d8;
+        transition: background-color 0.3s;
+        &:hover {
+          background-color: #9494a7;
+        }
+      }
+
+      /* Drag handles, somehow... */
+      .tabledrag-toggle-weight-wrapper,
+      .tabledrag-changed-warning {
+        position: absolute;
+        right: 5px;
+      }
+      .tabledrag-toggle-weight-wrapper,
+      .tabledrag-changed-warning {
+        top: 5px;
+      }
+      .tabledrag-changed-warning {
+        top: 2rem;
+      }
+      a.tabledrag-handle .handle {
+        width: 23px;
+        height: 23px;
+      }
+
+      table.field-multiple-table {
+        @apply w-full md:w-3/4 lg:w-2/3;
+        th h4.label  {
+          text-align: left;
+          font-size: 1.2rem;
+        }
+      }
+    }
+
+    fieldset {
+      &.form-composite {
+        .fieldset-wrapper {
+          width: 100%;
+
+          .form-item {
+            label {
+              min-width: 60%;
+              flex: 1;
+            }
+            input {
+              min-width: auto;
+              flex: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .field--type-text-with-summary {
+    .form-item {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .description {
+    @apply text-sm italic py-1 mt-2 border-t border-gray-300 flex-auto text-gray-600;
+  }
+
+  .vertical-tabs {
+    .vertical-tabs__panes {
+      padding: 0.5rem 0.6rem;
+    }
+  }
+
+}
