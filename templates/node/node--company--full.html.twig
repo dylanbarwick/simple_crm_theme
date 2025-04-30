@@ -76,6 +76,12 @@
     label_hidden ? 'node--label-hidden',
   ]
 %}
+{%
+  set content_classes = [
+    'content',
+    'mb-4',
+  ]
+%}
 <article{{ attributes.addClass(wrapper_classes) }}>
 
   {{ title_prefix }}
@@ -96,8 +102,11 @@
     </footer>
   {% endif %}
 
-  <div{{ content_attributes }}>
+  <div{{ content_attributes.addClass(content_classes) }}>
     {{ content }}
   </div>
+
+  {# Add gigs attached to this company #}
+  {{ drupal_view('gigs_for_this_company', 'upcoming_grouped_gigs_for_company') }}
 
 </article>

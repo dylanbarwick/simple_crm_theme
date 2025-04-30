@@ -75,6 +75,7 @@
     not node.isPublished() ? 'node--unpublished',
     label_hidden ? 'node--label-hidden',
     'p-3',
+    'mb-4',
     'border',
     'rounded-lg',
     'shadow',
@@ -121,7 +122,7 @@
       </div>
     {% endif %}
     <div class="button-container">
-      {{ drupal_link('Read more'|t, 'node/'~node.nid.0.value, {attributes: {target: '_blank', class: 'button'}}) }}
+      {{ drupal_link('Read more'|t, 'node/'~node.nid.0.value, {attributes: {target: '_self', class: 'button'}}) }}
       {# {{ dd(node.nid.0.value) }} #}
     </div>
   </div>

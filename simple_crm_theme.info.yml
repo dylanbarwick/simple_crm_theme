@@ -3,6 +3,8 @@ type: theme
 base theme: stable9
 description: A flexible theme with a responsive, mobile-first layout.
 package: Custom
+ckeditor5-stylesheets:
+  - src/css/ckeditor5-overrides/ckeditor5-overrides.css
 core_version_requirement: ^10
 libraries:
   - simple_crm_theme/global

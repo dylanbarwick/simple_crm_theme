@@ -600,6 +600,10 @@ video {
   position: relative;
 }
 
+.sticky {
+  position: sticky;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -628,6 +632,10 @@ video {
   margin-bottom: 1rem;
 }
 
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
 .block {
   display: block;
 }
@@ -640,6 +648,10 @@ video {
   display: table;
 }
 
+.table-caption {
+  display: table-caption;
+}
+
 .hidden {
   display: none;
 }
@@ -650,10 +662,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.max-w-screen-sm {
-  max-width: 640px;
 }
 
 .flex-1 {
@@ -726,6 +734,10 @@ video {
   padding-top: 1rem;
 }
 
+.text-left {
+  text-align: left;
+}
+
 .text-center {
   text-align: center;
 }
@@ -763,6 +775,22 @@ video {
   margin-bottom: 1rem;
 }
 
+#block-simple-crm-theme-views-block-my-stuff-block-gigs-14-days {
+  .views-row {
+    margin-bottom: 0.5rem;
+  }
+  .views-row {
+    border-bottom-width: 1px;
+  }
+  .views-row {
+    --tw-border-opacity: 1;
+    border-color: rgb(209 213 219 / var(--tw-border-opacity));
+  }
+  .views-row {
+    padding-bottom: 0.25rem;
+  }
+}
+
 #block-simple-crm-theme-site-branding {
   padding-bottom: 1rem;
   margin-bottom: 2rem;
@@ -797,6 +825,7 @@ video {
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
+    text-decoration: none;
     &:hover {
       background-color: #002d3e;
     }
@@ -915,7 +944,7 @@ form {
       }
       @media (min-width: 1024px) {
         table.field-multiple-table {
-          width: 66.666667%;
+          width: 66.66667%;
         }
       }
       table.field-multiple-table {
@@ -1140,6 +1169,8 @@ nav#block-simple-crm-theme-main-menu {
         display: inline-block;
         width: 100%;
         padding: 5px 15px 3px 15px;
+        text-decoration: none;
+        color: inherit;
       }
       ul.sub-menu {
         display: none;
@@ -1279,6 +1310,31 @@ ul.calendar-view-pager {
   margin-bottom: 0.5rem;
 }
 
+/* Gigs/jobs for... */
+
+.gigs_for_this_company.upcoming_grouped_gigs_for_company,
+.gigs_for_this_contact.upcoming_grouped_gigs_for_contact,
+.gigs_for_this_job.upcoming_gigs_for_job {
+  thead tr {
+    th:last-child {
+      width: 20%;
+    }
+    @media (min-width: 768px) {
+      th:last-child {
+        width: 16.66667%;
+      }
+    }
+    th:nth-child(2) {
+      width: 25%;
+    }
+    @media (min-width: 768px) {
+      th:nth-child(2) {
+        width: 30%;
+      }
+    }
+  }
+}
+
 /* Layout */
 
 h1,
@@ -1326,6 +1382,11 @@ ul {
 
 ol {
   list-style: decimal;
+}
+
+a {
+  color: #0073aa;
+  text-decoration: underline;
 }
 
 .node-contact {
@@ -1381,6 +1442,12 @@ ol {
     p {
       margin-bottom: 1rem;
     }
+  }
+}
+
+.node--type-company.node--view-mode-full {
+  .body {
+    margin-bottom: 1rem;
   }
 }
 
@@ -1471,17 +1538,37 @@ ol {
 }
 
 @media (min-width: 768px) {
+  .md\:col-span-12 {
+    grid-column: span 12 / span 12;
+  }
+
+  .md\:col-span-3 {
+    grid-column: span 3 / span 3;
+  }
+
+  .md\:col-span-9 {
+    grid-column: span 9 / span 9;
+  }
+
   .md\:mx-8 {
     margin-left: 2rem;
     margin-right: 2rem;
+  }
+
+  .md\:grid {
+    display: grid;
   }
 
   .md\:w-3\/4 {
     width: 75%;
   }
 
-  .md\:max-w-screen-md {
-    max-width: 768px;
+  .md\:grid-cols-12 {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .md\:gap-4 {
+    gap: 1rem;
   }
 }
 
@@ -1498,6 +1585,18 @@ ol {
     top: 0px;
   }
 
+  .lg\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .lg\:col-span-3 {
+    grid-column: span 3 / span 3;
+  }
+
+  .lg\:col-span-7 {
+    grid-column: span 7 / span 7;
+  }
+
   .lg\:mx-10 {
     margin-left: 2.5rem;
     margin-right: 2.5rem;
@@ -1508,20 +1607,10 @@ ol {
   }
 
   .lg\:w-2\/3 {
-    width: 66.666667%;
-  }
-
-  .lg\:max-w-screen-lg {
-    max-width: 1024px;
+    width: 66.66667%;
   }
 
   .lg\:text-right {
     text-align: right;
-  }
-}
-
-@media (min-width: 1280px) {
-  .xl\:max-w-screen-xl {
-    max-width: 1280px;
   }
 }

@@ -49,3 +49,17 @@ ul.calendar-view-pager {
   background-color: #dddd00;
   margin-bottom: 0.5rem;
 }
+
+/* Gigs/jobs for... */
+.gigs_for_this_company.upcoming_grouped_gigs_for_company,
+.gigs_for_this_contact.upcoming_grouped_gigs_for_contact,
+.gigs_for_this_job.upcoming_gigs_for_job {
+  thead tr {
+    th:last-child {
+      @apply w-1/5 md:w-1/6;
+    }
+    th:nth-child(2) {
+      @apply w-1/4 md:w-[30%];
+    }
+  }
+}

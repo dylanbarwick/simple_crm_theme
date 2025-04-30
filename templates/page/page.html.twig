@@ -55,7 +55,36 @@
     'xl:max-w-screen-xl',
   ]
 %}
+
+{% set main_wrapper_classes = ['md:grid', 'md:gap-4', 'md:grid-cols-12'] %}
+{% set main_content_classes = ['layout-content', 'md:col-span-12'] %}
+
+{% if page.sidebar_first %}
+  {% set layout_classes = layout_classes|merge(['layout-sidebar-first']) %}
+  {% set main_content_classes = ['md:col-span-9'] %}
+  {% set sidebar_first_classes = ['md:col-span-3'] %}
+  {% set sidebarFirstAttributes = create_attribute() %}
+{% endif %}
+
+{% if page.sidebar_second %}
+  {% set layout_classes = layout_classes|merge(['layout-sidebar-second']) %}
+  {% set main_content_classes = ['md:col-span-9'] %}
+  {% set sidebar_second_classes = ['md:col-span-3'] %}
+  {% set sidebarSecondAttributes = create_attribute() %}
+{% endif %}
+
+{% if page.sidebar_first and page.sidebar_second %}
+  {% set layout_classes = layout_classes|merge(['layout-sidebar-first-second']) %}
+  {% set main_content_classes = ['lg:col-span-7', 'md:col-span-9'] %}
+  {% set sidebar_first_classes = ['lg:col-span-3', 'md:col-span-3'] %}
+  {% set sidebar_second_classes = ['lg:col-span-2', 'md:col-span-12'] %}
+  {% set sidebarFirstAttributes = create_attribute() %}
+  {% set sidebarSecondAttributes = create_attribute() %}
+{% endif %}
+
 {% set layoutAttributes = create_attribute() %}
+{% set mainWrapperAttributes = create_attribute() %}
+{% set mainContentAttributes = create_attribute() %}
 <div{{layoutAttributes.addClass(layout_classes)}}>
 
   <header role="banner" class="relative">
@@ -71,21 +100,21 @@
 
   {{ page.help }}
 
-  <main role="main">
-    <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+  <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+  <main role="main" {{mainWrapperAttributes.addClass(main_wrapper_classes)}}>
 
-    <div class="layout-content">
+    <div {{mainContentAttributes.addClass(main_content_classes)}}>
       {{ page.content }}
     </div>{# /.layout-content #}
 
     {% if page.sidebar_first %}
-      <aside class="layout-sidebar-first" role="complementary">
+      <aside id="sidebar-first" role="complementary" {{sidebarFirstAttributes.addClass(sidebar_first_classes)}}>
         {{ page.sidebar_first }}
       </aside>
     {% endif %}
 
     {% if page.sidebar_second %}
-      <aside class="layout-sidebar-second" role="complementary">
+      <aside id="sidebar-second" role="complementary" {{sidebarSecondAttributes.addClass(sidebar_second_classes)}}>
         {{ page.sidebar_second }}
       </aside>
     {% endif %}

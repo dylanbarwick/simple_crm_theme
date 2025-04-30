@@ -45,6 +45,11 @@ ol {
   list-style: decimal;
 }
 
+a {
+  color: #0073aa;
+  text-decoration: underline;
+}
+
 .node-contact {
   .contact-element {
     display: block;
@@ -85,5 +90,11 @@ ol {
     p {
       margin-bottom: 1rem;
     }
+  }
+}
+
+.node--type-company.node--view-mode-full {
+  .body {
+    @apply mb-4;
   }
 }
